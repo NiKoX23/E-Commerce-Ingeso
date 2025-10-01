@@ -1,0 +1,10 @@
+//aqui envian informacion
+import { Router, Request, Response } from "express";
+
+const router = Router();
+
+router.get("/", (req: Request, res: Response) => {
+  res.send("Ruta todos");
+});
+
+export default router;
