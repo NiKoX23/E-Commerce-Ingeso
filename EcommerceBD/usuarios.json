@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "username": "diegokwk",
+    "password": "1101",
+    "email": "diego@ecommerce.com"
+  },
+  {
+    "id": 2,
+    "username": "admin",
+    "password": "123456",
+    "email": "admin@ecommerce.com"
+  },
+  {
+    "id": 3,
+    "username": "tetas",
+    "password": "1234",
+    "email": "diegoa@gmail.com"
+  }
+]
