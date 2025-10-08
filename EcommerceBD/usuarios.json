@@ -1,32 +1,8 @@
 [
   {
     "id": 1,
-    "username": "diegokwk",
-    "password": "1101",
-    "email": "diego@ecommerce.com"
-  },
-  {
-    "id": 2,
     "username": "admin",
     "password": "123456",
     "email": "admin@ecommerce.com"
-  },
-  {
-    "id": 3,
-    "username": "tetas",
-    "password": "1234",
-    "email": "diegoa@gmail.com"
-  },
-  {
-    "id": 4,
-    "username": "diego",
-    "password": "1234",
-    "email": "messi@gmail.com"
-  },
-  {
-    "id": 5,
-    "username": "kaka",
-    "password": "12345",
-    "email": "m@gmail.com"
   }
 ]
