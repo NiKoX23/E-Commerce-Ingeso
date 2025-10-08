@@ -1,5 +1,4 @@
 import { useState } from "react";
-import DefaultLayout from "../Layouts/DefaultLayout";
 import { useAuth } from "../Autenticacion/AuthProvider";
 import { Navigate } from "react-router-dom";
 
@@ -10,12 +9,12 @@ export default function SignUp() {
 
   const autenticado = useAuth();
 
-  if(autenticado.isAuthenticated) {
+  /*if(autenticado.isAuthenticated) {
     return <Navigate to="/dashboard" />
-  }
+  }*/
 
   return (
-    <DefaultLayout>
+    <div>
       <form className="form">  
         <h1>Registrarse</h1>
 
@@ -29,6 +28,6 @@ export default function SignUp() {
         <input type="password" value ={password} onChange={(e) => setPassword(e.target.value)} />
         <button type="submit">Registrarse</button>
       </form>
-    </DefaultLayout>
+    </div>
   )
 }

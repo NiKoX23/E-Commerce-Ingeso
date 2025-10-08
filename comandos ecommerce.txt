@@ -1,0 +1,2 @@
+iniciar backend: npx ts-node app.ts
+iniciar frontend: npm run dev

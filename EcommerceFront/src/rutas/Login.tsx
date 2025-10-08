@@ -1,5 +1,5 @@
-import DefaultLayout from "../Layouts/DefaultLayout";
 import { useState } from "react";
+import { Password } from 'primereact/password';
 import { useAuth } from "../Autenticacion/AuthProvider";
 import { Navigate } from "react-router-dom";
 
@@ -13,7 +13,7 @@ export default function Login() {
   }
 
   return (
-    <DefaultLayout>
+    <div>
       <form className="form">  
         <h1>Iniciar Sesión</h1>
         <label>Usuario</label>
@@ -22,6 +22,6 @@ export default function Login() {
         <input type="password" value ={password} onChange={(e) => setPassword(e.target.value)} />
         <button type="submit">Login</button>
       </form>
-    </DefaultLayout>
+    </div>
   )
 }
