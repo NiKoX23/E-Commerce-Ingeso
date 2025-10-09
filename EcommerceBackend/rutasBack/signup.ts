@@ -11,7 +11,7 @@ router.post("/", async(req: Request, res: Response) => {
     if(!rut || !nombre || !email || !password) {
       return res.status(400).json({
         success: false,
-        error: "Rellene todos los campos"
+        message: "Rellene todos los campos"
       });
     }
 
@@ -24,7 +24,7 @@ router.post("/", async(req: Request, res: Response) => {
     if (existingUser.rows.length > 0) {
       return res.status(400).json({
         success: false,
-        error: "El usuario, email o RUT ya existe"
+        message: "El usuario, email o RUT ya existe"
       });
     }
 

@@ -6,54 +6,56 @@ const router = Router();
 
 router.post("/", async (req: Request, res: Response) => {
   try {
-    const { username, password } = req.body;
+    const { username, email, password } = req.body;
     
-    if (!username || !password) {
+    if ((!username && !email) || !password) {
       return res.status(400).json({ 
         success: false, 
-        error: 'Username y password son requeridos' 
+        message: 'Username/email y password son requeridos' 
       });
     }
     
-    // Buscar usuario en PostgreSQL
+    // Buscar usuario por username o email
+    const searchValue = username || email;
     const result = await pool.query(
       'SELECT rut, nombre, email, password FROM USUARIO WHERE nombre = $1 OR email = $1',
-      [username]
+      [searchValue]
     );
     
     if (result.rows.length === 0) {
       return res.status(401).json({ 
         success: false, 
-        error: 'Credenciales inválidas' 
+        message: 'Usuario o Contraseña incorrectos' 
       });
     }
     
-    const usuario = result.rows[0];
+    const user = result.rows[0];
     
     // Verificar contraseña
-    const passwordValid = await bcrypt.compare(password, usuario.password);
+    const passwordValid = await bcrypt.compare(password, user.password);
     
     if (passwordValid) {
       res.json({ 
         success: true, 
-        message: 'Login exitoso',
+        message: 'Acceso correcto',
         user: { 
-          rut: usuario.rut, 
-          nombre: usuario.nombre, 
-          email: usuario.email 
+          rut: user.rut, 
+          nombre: user.nombre, 
+          email: user.email 
         }
       });
     } else {
       res.status(401).json({ 
         success: false, 
-        error: 'Credenciales inválidas' 
+        message: 'Contraseña incorrecta' 
       });
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error en login:', error);
     res.status(500).json({ 
       success: false, 
-      error: 'Error interno del servidor' 
+      message: 'Error en el servidor',
+      error: error.message
     });
   }
 });

@@ -43,8 +43,8 @@ export default function SignUp() {
         alert('Usuario registrado exitosamente. Ahora puedes iniciar sesión.');
         navigate('/login');
       } else {
-        console.error('Error en registro:', data.error);
-        alert(data.error || 'Error al registrar usuario');
+        console.error('Error en registro:', data.message);
+        alert(data.message || 'Error al registrar usuario');
       }
     } catch (error) {
       console.error('Error de conexión:', error);
