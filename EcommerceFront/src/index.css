@@ -29,7 +29,7 @@ input[type="text"],
 
 input[type="button"],
 button {
-  background-color: rgb(39, 131, 212);
+  background-color: rgb(0, 5, 8);
   padding: 10px;
   border: 0;
   min-width: 100px;

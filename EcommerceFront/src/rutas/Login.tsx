@@ -43,7 +43,7 @@ export default function Login() {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        background: 'linear-gradient(135deg, #3a67c0, #5ab9ea)',
+        background: 'linear-gradient(135deg, #000000ff, #ff0a0aff)',
         padding: '2rem',
       }}>
         <Card 
@@ -81,7 +81,7 @@ export default function Login() {
 
             <div className="p-field p-col-12">
              <Button
-                label="Login"
+                label="Ingresar"
                 className="p-button-primary p-button-rounded p-button-lg"
                 style={{width:'100%'}}
                 onClick={handleSubmit}

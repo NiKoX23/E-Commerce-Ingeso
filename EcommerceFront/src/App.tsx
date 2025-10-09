@@ -13,12 +13,13 @@ function App() {
     <div
       style={{
         minHeight: '100vh',
+        boxSizing: 'border-box',
         padding: '2rem',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(135deg, #3a67c0, #826868ff)',
+        background: 'linear-gradient(135deg, #000000ff, #9e0505ff)',
       }}>
 
       <h1 style={{ 
@@ -26,7 +27,7 @@ function App() {
         marginBottom: '3rem',
         color: '#fff',
         textShadow: '1px 1px 5px rgba(0, 0, 0, 0.3)',}}>
-        Bienvenido a Ecommerce
+        Bienvenido a PARGAS-Ecommerce
       </h1>
 
       <div
