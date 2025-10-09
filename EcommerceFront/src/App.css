@@ -1,9 +1,8 @@
-/* Eliminar restricciones del root que limitan el tamaño */
 #root {
-  width: 100%;
-  min-height: 100vh;
-  margin: 0;
+  max-width: 1920px;
+  margin: 0 auto;
   padding: 0;
+  text-align: center;
 }
 
 .logo {
@@ -72,27 +71,4 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* Asegurar que el fondo cubra toda la pantalla */
-.full-screen-gradient {
-  min-height: 100vh;
-  width: 100vw;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background: linear-gradient(135deg, #3a67c0, #826868ff);
-  z-index: -1;
-}
-
-.page-container {
-  min-height: 100vh;
-  width: 100%;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 1;
 }

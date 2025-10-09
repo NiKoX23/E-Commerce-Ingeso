@@ -40,7 +40,7 @@ export default function Login() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(135deg, #3a67c0, #826868ff)',
+        background: 'linear-gradient(135deg, #000000ff, #ff0a0aff)',
       }}>
 
       <Button 

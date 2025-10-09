@@ -63,7 +63,7 @@ export default function SignUp() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(135deg, #3a67c0, #826868ff)',
+        background: 'linear-gradient(135deg, #000000ff, #ff0000ff)',
       }}>
 
       <Button 
