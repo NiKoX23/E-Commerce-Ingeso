@@ -64,4 +64,4 @@ a {
   background-color: #f2dede;
   color: #a94442;
   padding: 10px;
-}
+}CREATE TABLE USUARIO( rut VARCHAR(100) PRIMARY KEY, nombre VARCHAR(100) NOT NULL, email VARCHAR(200) UNIQUE NOT NULL, password TEXT NOT NULL, fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP );
