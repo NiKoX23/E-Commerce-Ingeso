@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import './db'; // Importar la conexión a PostgreSQL
 
 import loginRouter from './rutasBack/login';
 import refreshTokenRouter from './rutasBack/refreshToken';
@@ -25,9 +25,9 @@ app.use('/api/todos', todosRouter);
 app.use('/api/user', userRouter);
 
 app.get('/', (req, res) => {
-  res.send('Backend is running');
+  res.send('Backend is running with PostgreSQL');
 });
 
 app.listen(PORT, () => {
-  console.log(`Server inciado en http://localhost:${PORT}`);
+  console.log(`Server iniciado en http://localhost:${PORT}`);
 });

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../Autenticacion/AuthProvider";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
@@ -10,24 +9,21 @@ import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
+import { useAuth } from '../Autenticacion/AuthProvider';
 
 export default function Login() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { isAuthenticated, login } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
-
-  if(isAuthenticated) {
-    return <Navigate to="/dashboard" />
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
     try {
-      await login(name, password);
+      await login(username, password);
     } catch (error) {
       console.error('Error en login:', error);
     } finally {
@@ -64,7 +60,8 @@ export default function Login() {
         textAlign: 'center',
         marginBottom: '3rem',
         color: '#fff',
-        textShadow: '1px 1px 5px rgba(0, 0, 0, 0.3)',}}>
+        textShadow: '1px 1px 5px rgba(0, 0, 0, 0.3)',
+      }}>
         Iniciar Sesión
       </h1>
 
@@ -82,13 +79,13 @@ export default function Login() {
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div style={{ textAlign: 'left' }}>
             <label htmlFor="username" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
-              Usuario
+              Usuario o Email
             </label>
             <InputText
               id="username"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Ingresa tu usuario"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Ingresa tu usuario o email"
               style={{ width: '100%' }}
               required
             />
@@ -120,7 +117,16 @@ export default function Login() {
             loading={isLoading}
           />
         </form>
+
+        <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+          <p style={{ color: '#666' }}>¿No tienes cuenta?</p>
+          <Button 
+            label="Crear Cuenta"
+            className="p-button-text"
+            onClick={() => navigate('/signup')}
+          />
+        </div>
       </Card>
     </div>
-  )
+  );
 }

@@ -11,6 +11,7 @@ import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 
 export default function SignUp() {
+  const [rut, setRut] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -28,7 +29,8 @@ export default function SignUp() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          username: name, 
+          rut,
+          nombre: name, 
           password, 
           email 
         }),
@@ -97,6 +99,20 @@ export default function SignUp() {
         }}>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ textAlign: 'left' }}>
+            <label htmlFor="rut" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+              RUT
+            </label>
+            <InputText
+              id="rut"
+              value={rut}
+              onChange={(e) => setRut(e.target.value)}
+              placeholder="Ej: 12345678-9"
+              style={{ width: '100%' }}
+              required
+            />
+          </div>
+
           <div style={{ textAlign: 'left' }}>
             <label htmlFor="name" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
               Nombre

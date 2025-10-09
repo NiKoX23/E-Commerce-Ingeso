@@ -1,9 +1,10 @@
 import { Router, Request, Response } from 'express';
-import { validarUsuario } from '../../EcommerceBD/dbManager';
+import { pool } from '../db';
+import bcrypt from 'bcrypt';
 
 const router = Router();
 
-router.post("/", (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;
     
@@ -14,15 +15,31 @@ router.post("/", (req: Request, res: Response) => {
       });
     }
     
-    const usuario = validarUsuario(username, password);
+    // Buscar usuario en PostgreSQL
+    const result = await pool.query(
+      'SELECT rut, nombre, email, password FROM USUARIO WHERE nombre = $1 OR email = $1',
+      [username]
+    );
     
-    if (usuario) {
+    if (result.rows.length === 0) {
+      return res.status(401).json({ 
+        success: false, 
+        error: 'Credenciales inválidas' 
+      });
+    }
+    
+    const usuario = result.rows[0];
+    
+    // Verificar contraseña
+    const passwordValid = await bcrypt.compare(password, usuario.password);
+    
+    if (passwordValid) {
       res.json({ 
         success: true, 
         message: 'Login exitoso',
         user: { 
-          id: usuario.id, 
-          username: usuario.username, 
+          rut: usuario.rut, 
+          nombre: usuario.nombre, 
           email: usuario.email 
         }
       });

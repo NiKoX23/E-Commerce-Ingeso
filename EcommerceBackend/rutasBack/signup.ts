@@ -1,69 +1,52 @@
-import { Router, Request, Response } from 'express';
-import { agregarUsuario, usuarioExiste } from '../../EcommerceBD/dbManager';
+import { Router, Request, Response } from "express";
+import { pool } from "../db";
+import bcrypt from "bcrypt";
 
 const router = Router();
 
-router.post("/", (req: Request, res: Response) => {
-  try {
-    const { username, password, email } = req.body;
+router.post("/", async(req: Request, res: Response) => {
+  try{
+    const { rut, nombre, email, password} = req.body;
     
-    if (!username || !password || !email) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'Username, password y email son requeridos' 
+    if(!rut || !nombre || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        error: "Rellene todos los campos"
       });
     }
 
-    if (username.length < 3) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'El username debe tener al menos 3 caracteres' 
+    // Verificar si el usuario ya existe
+    const existingUser = await pool.query(
+      "SELECT rut FROM USUARIO WHERE rut = $1 OR email = $2 OR nombre = $3",
+      [rut, email, nombre]
+    );
+
+    if (existingUser.rows.length > 0) {
+      return res.status(400).json({
+        success: false,
+        error: "El usuario, email o RUT ya existe"
       });
     }
 
-    if (password.length < 4) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'La contraseña debe tener al menos 4 caracteres' 
-      });
-    }
+    const encPassword = await bcrypt.hash(password, 10);
+    const result = await pool.query(
+      "INSERT INTO USUARIO (rut, nombre, email, password) VALUES ($1, $2, $3, $4) RETURNING rut, nombre, email",
+      [rut, nombre, email, encPassword]
+    );
 
-    if (usuarioExiste(username)) {
-      return res.status(409).json({ 
-        success: false, 
-        error: 'El usuario ya existe' 
-      });
-    }
-    
-    const nuevoUsuario = agregarUsuario(username, password, email);
-    
-    if (nuevoUsuario) {
-      res.json({ 
-        success: true, 
-        message: 'Usuario registrado exitosamente',
-        user: { 
-          id: nuevoUsuario.id, 
-          username: nuevoUsuario.username, 
-          email: nuevoUsuario.email 
-        }
-      });
-    } else {
-      res.status(500).json({ 
-        success: false, 
-        error: 'Error al crear el usuario' 
-      });
-    }
-  } catch (error) {
-    console.error('Error en registro:', error);
-    res.status(500).json({ 
-      success: false, 
-      error: 'Error interno del servidor' 
+    res.status(201).json({
+      success: true,
+      message: "Usuario registrado con éxito", 
+      user: result.rows[0]
+    });
+  } catch (error: any) {
+    console.error('Error en signup:', error);
+    res.status(500).json({
+      success: false,
+      message: "Error en el servidor", 
+      error: error.message
     });
   }
-});
-
-router.get("/", (req: Request, res: Response) => {
-  res.send("SignUp endpoint - use POST method");
 });
 
 export default router;
