@@ -2,13 +2,12 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import './App.css';
-
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { useNavigate } from 'react-router-dom';
 
 function App() {
-  const navigate = useNavigate();
+  const navegate = useNavigate();
 
   return (
     <div
@@ -57,7 +56,7 @@ function App() {
                 className="p-button-primary p-button-rounded p-button-lg"
                 style={{width: '100%'}}
                 onClick={() => {
-                  navigate('/login');
+                  navegate('/login');
                 }}
             />
           </p>
@@ -81,7 +80,7 @@ function App() {
               className="p-button-primary p-button-rounded p-button-lg"
               style={{width: '100%'}}
               onClick={() => {
-                navigate('/signup');
+                navegate('/signup');
               }}
             />
           </p>

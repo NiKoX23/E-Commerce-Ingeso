@@ -5,7 +5,7 @@ import { createBrowserRouter,RouterProvider } from 'react-router-dom'
 import App from './App.tsx'
 import Login from './rutas/Login.tsx'
 import SignUp from './rutas/SignUp.tsx'
-import { AuthProvider } from './Autenticacion/AuthProvider'
+import Dashboard from './rutas/Dashboard.tsx'
 
 const router = createBrowserRouter([
   {
@@ -24,13 +24,16 @@ const router = createBrowserRouter([
     element: <SignUp />,
   },
 
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+  },
 
 ])
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthProvider>  
-      <RouterProvider router={router} />
-    </AuthProvider>
-  </StrictMode>,
+    <RouterProvider router={router} />
+  </StrictMode>
 )
+

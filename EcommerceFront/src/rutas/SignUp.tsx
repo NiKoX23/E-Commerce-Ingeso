@@ -1,33 +1,136 @@
 import { useState } from "react";
-import { useAuth } from "../Autenticacion/AuthProvider";
-import { Navigate } from "react-router-dom";
+import { Card } from "primereact/card";
+import { Button } from "primereact/button";
+import { Password } from "primereact/password";
+import { InputText } from "primereact/inputtext";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function SignUp() {
-  const [name, setName] = useState("");
+  const [nombre, setNombre] = useState("");
   const [password, setPassword] = useState("");
+  const [confirm_password, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [rut, setRut] = useState("");
+  const navigate = useNavigate();
 
-  const autenticado = useAuth();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  /*if(autenticado.isAuthenticated) {
-    return <Navigate to="/dashboard" />
-  }*/
+    if (password !== confirm_password) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
+
+    try{
+      const response = await fetch("http://localhost:5000/api/signup", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({rut, nombre, email, password}),
+      });
+      const data = await response.json();
+      if(response.ok){
+        alert("Usuario registrado con éxito");
+        setNombre("");
+        setRut("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        navigate("/login");
+      }else{
+        alert("Error: " + data.message);
+        
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error en el servidor");
+    }
+  }
 
   return (
-    <div>
-      <form className="form">  
-        <h1>Registrarse</h1>
+      <div 
+          style={{
+            minHeight: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            background: 'linear-gradient(135deg, #3a67c0, #5ab9ea)',
+            padding: '2rem',
+          }}>
+            <Card 
+              title="Registrarse"
+              style={{
+                width: '350px',
+                borderRadius: '12px',
+                boxShadow: '0 8px 20px rgba(0,0,0,0.2)',
+                backgroundColor: '#ffffffcc',
+                padding: '2rem',
+                textAlign: 'center',
+              }}>
+    
+              <div className="p-fluid p-formgrid p-grid">
+                <div className="p-field p-col-12">
+                  <label htmlFor="nombre">Nombre</label>
+                  <InputText 
+                    id="nombre" 
+                    value={nombre} 
+                    onChange={(e) => setNombre(e.target.value)} 
+                    placeholder="Ingrese su nombre"
+                  />
+                </div>
 
-        <label>Nombre</label>
-        <input type="text" value ={name} onChange={(e) => setName(e.target.value)} />
+                <div className="p-field p-col-12">
+                  <label htmlFor="rut">RUT</label>
+                  <InputText 
+                    id="rut" 
+                    value={rut} 
+                    onChange={(e) => setRut(e.target.value)} 
+                    placeholder="RUT (EJ: 12345678-9)"
+                  />
+                </div>
 
-        <label>Correo electrónico</label>
-        <input type="text" value ={email} onChange={(e) => setEmail(e.target.value)} />
+                <div className="p-field p-col-12">
+                  <label htmlFor="email">Email</label>
+                  <InputText 
+                    id="email" 
+                    value={email} 
+                    onChange={(e) => setEmail(e.target.value)} 
+                    placeholder="Ingrese su email"
+                  />
+                </div>
 
-        <label>Contraseña</label>
-        <input type="password" value ={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Registrarse</button>
-      </form>
-    </div>
+                <div className="p-field p-col-12">
+                  <label htmlFor="password">Contraseña</label>
+                  <Password
+                    id="password"
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                    feedback={false}
+                    placeholder="Ingrese su contraseña"
+                  />
+                </div>
+
+                <div className="p-field p-col-12">
+                  <label htmlFor="confirm_password">Confirmar Contraseña</label>
+                  <Password
+                    id="confirm_password"
+                    value={confirm_password} 
+                    onChange={(e) => setConfirmPassword(e.target.value)} 
+                    feedback={false}
+                    placeholder="Confirme su contraseña"
+                  />
+                </div>
+    
+                <div className="p-field p-col-12">
+                 <Button
+                    label="SignUp"
+                    className="p-button-primary p-button-rounded p-button-lg"
+                    style={{width:'100%'}}
+                    onClick={handleSubmit}
+                  />
+                </div>
+
+              </div>
+            </Card>
+        </div>
   )
 }
