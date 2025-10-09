@@ -1,57 +1,111 @@
-import 'primereact/resources/themes/lara-light-indigo/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
-import '../App.css';
-
-import { Button } from 'primereact/button';
-import { Card } from 'primereact/card';
-import { useAuth } from '../Autenticacion/AuthProvider';
+import { Card } from "primereact/card";
 
 export default function Dashboard() {
-  const { logout } = useAuth();
+    return (
+        <div 
+            style={{
+                minHeight: '100vh',
+                boxSizing: 'border-box',
+                padding: '2rem',
+                display: 'flex',
+                flexDirection: 'column', 
+                alignItems: 'center',
+                justifyContent: 'flex-start', 
+                background: 'linear-gradient(135deg, #000000ff, #9e0505ff)',
+            }}>
+            
+            <h1 style={{ 
+                textAlign: 'center',
+                marginBottom: '2rem',
+                color: '#fff',
+                textShadow: '1px 1px 5px rgba(0, 0, 0, 0.3)',
+            }}>
+                Catalogo de productos
+            </h1>
 
-  return (
-    <div
-      style={{
-        minHeight: '100vh',
-        padding: '2rem',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'linear-gradient(135deg, #3a67c0, #826868ff)',
-      }}>
+            <div
+                style={{
+                    display: 'flex', 
+                    flexDirection: 'row', 
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                    gap: '2rem', 
+                }}>
 
-      <h1 style={{ 
-        textAlign: 'center',
-        marginBottom: '3rem',
-        color: '#fff',
-        textShadow: '1px 1px 5px rgba(0, 0, 0, 0.3)',}}>
-        Dashboard - Bienvenido
-      </h1>
+                <Card 
+                    title="Futbol"
+                    style={{
+                        width: '200px',
+                        height:'100px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent:'center',
+                        borderRadius: '12px',
+                        boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)',
+                        backgroundColor: '#02fff2ff',
+                        padding: '2rem',
+                        textAlign: 'center',
+                    }}></Card> 
 
-      <Card
-        header={<h3 style={{color: '#282623ff' }}>Panel de Control</h3>}
-        className='card-animated card-fade'
-        style={{ 
-          width: '400px',
-          textAlign: 'center',
-          borderRadius: '12px',
-          boxShadow: '0 8px 20px rgba(0,0,0,0.2)',
-          backgroundColor: '#ffffffcc'
-        }}>
+                <Card 
+                    title="Tenis"
+                    style={{
+                        width: '200px',
+                        height:'100px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent:'center',
+                        borderRadius: '12px',
+                        boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)',
+                        backgroundColor: '#02fff2ff',
+                        padding: '2rem',
+                        textAlign: 'center',
+                    }}></Card> 
 
-        <p style={{ marginBottom: '2rem', color: '#666' }}>
-          Has iniciado sesión exitosamente
-        </p>
+                <Card 
+                    title="Basketball"
+                    style={{
+                        width: '200px',
+                        height:'100px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent:'center',
+                        borderRadius: '12px',
+                        boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)',
+                        backgroundColor: '#02fff2ff',
+                        padding: '2rem',
+                        textAlign: 'center',
+                    }}></Card> 
 
-        <Button 
-          label="Cerrar Sesión"
-          className="p-button-secondary p-button-rounded p-button-lg"
-          style={{width: '100%'}}
-          onClick={logout}
-        />
-      </Card>
-    </div>
-  );
+                <Card 
+                    title="Boxeo"
+                    style={{
+                        width: '200px',
+                        height:'100px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent:'center',
+                        borderRadius: '12px',
+                        boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)',
+                        backgroundColor: '#02fff2ff',
+                        padding: '2rem',
+                        textAlign: 'center',
+                    }}></Card> 
+                <Card 
+                    title="Running"
+                    style={{
+                        width: '200px',
+                        height:'100px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent:'center',
+                        borderRadius: '12px',
+                        boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)',
+                        backgroundColor: '#02fff2ff',
+                        padding: '2rem',
+                        textAlign: 'center',
+                    }}></Card> 
+            </div>
+        </div>
+    );
 }

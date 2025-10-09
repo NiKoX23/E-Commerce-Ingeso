@@ -1,132 +1,94 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import 'primereact/resources/themes/lara-light-indigo/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
-import '../App.css';
-
-import { Button } from 'primereact/button';
-import { Card } from 'primereact/card';
-import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
-import { useAuth } from '../Autenticacion/AuthProvider';
+import { Card } from "primereact/card";
+import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
-  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const navegate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit= async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    
-    try {
-      await login(username, password);
-    } catch (error) {
-      console.error('Error en login:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
+    try{
+      const response = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({email, password}),
+      });
+
+      const data = await response.json();
+
+      if(response.ok){
+        alert("Acceso correcto");
+        localStorage.setItem("user",JSON.stringify(data.user));
+        navegate("/dashboard");
+      }else{
+        alert("Error: " + data.message);
+      }
+
+    }catch (error) {
+      console.error(error);
+      alert("Error en el servidor");
+    }
+  
+  }
   return (
-    <div
+    <div 
       style={{
         minHeight: '100vh',
-        padding: '2rem',
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(135deg, #3a67c0, #826868ff)',
+        alignItems: 'center',
+        background: 'linear-gradient(135deg, #000000ff, #ff0a0aff)',
+        padding: '2rem',
       }}>
+        <Card 
+          title="Iniciar Sesión"
+          style={{
+            width: '350px',
+            borderRadius: '12px',
+            boxShadow: '0 8px 20px rgba(0,0,0,0.2)',
+            backgroundColor: '#ffffffcc',
+            padding: '2rem',
+            textAlign: 'center',
+          }}>
 
-      <Button 
-        icon="pi pi-arrow-left"
-        label="Volver"
-        className="p-button-text p-button-lg"
-        style={{ 
-          position: 'absolute',
-          top: '2rem',
-          left: '2rem',
-          color: '#fff'
-        }}
-        onClick={() => navigate('/')}
-      />
+          <div className="p-fluid p-formgrid p-grid">
+            <div className="p-field p-col-12">
+              <label htmlFor="email">Correo</label>
+              <InputText 
+                id="email" 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+                placeholder="Ingrese su correo"
+              />
+            </div>
 
-      <h1 style={{ 
-        textAlign: 'center',
-        marginBottom: '3rem',
-        color: '#fff',
-        textShadow: '1px 1px 5px rgba(0, 0, 0, 0.3)',
-      }}>
-        Iniciar Sesión
-      </h1>
+            <div className="p-field p-col-12">
+              <label htmlFor="password">Contraseña</label>
+              <Password
+                id="password"
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} 
+                feedback={false}
+                placeholder="Ingrese su contraseña"
+              />
+            </div>
 
-      <Card
-        className='card-animated card-fade'
-        style={{ 
-          width: '400px',
-          textAlign: 'center',
-          borderRadius: '12px',
-          boxShadow: '0 8px 20px rgba(0,0,0,0.2)',
-          backgroundColor: '#ffffffcc',
-          padding: '2rem'
-        }}>
-
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div style={{ textAlign: 'left' }}>
-            <label htmlFor="username" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
-              Usuario o Email
-            </label>
-            <InputText
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Ingresa tu usuario o email"
-              style={{ width: '100%' }}
-              required
-            />
+            <div className="p-field p-col-12">
+             <Button
+                label="Ingresar"
+                className="p-button-primary p-button-rounded p-button-lg"
+                style={{width:'100%'}}
+                onClick={handleSubmit}
+              />
+            </div>
           </div>
-
-          <div style={{ textAlign: 'left' }}>
-            <label htmlFor="password" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
-              Contraseña
-            </label>
-            <Password
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Ingresa tu contraseña"
-              style={{ width: '100%' }}
-              inputStyle={{ width: '100%' }}
-              feedback={false}
-              toggleMask
-              required
-            />
-          </div>
-
-          <Button 
-            type="submit"
-            label={isLoading ? 'Iniciando...' : 'Iniciar Sesión'}
-            className="p-button-primary p-button-rounded p-button-lg"
-            style={{ width: '100%', marginTop: '1rem' }}
-            disabled={isLoading}
-            loading={isLoading}
-          />
-        </form>
-
-        <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-          <p style={{ color: '#666' }}>¿No tienes cuenta?</p>
-          <Button 
-            label="Crear Cuenta"
-            className="p-button-text"
-            onClick={() => navigate('/signup')}
-          />
-        </div>
-      </Card>
+        </Card>
     </div>
   );
 }
