@@ -8,7 +8,7 @@ export const pool = new pg.Pool({
     user: process.env.DB_USER || 'postgres',
     password: process.env.DB_PASSWORD || 'nico123',
     database: process.env.DB_NAME || 'Ecommerce',
-    port: parseInt(process.env.DB_PORT || '5432'),
+  port: parseInt(process.env.DB_PORT || '5433'),
     max: 20,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000,
