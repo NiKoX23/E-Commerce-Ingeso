@@ -1,8 +1,7 @@
 import pg from 'pg';
 import dotenv from 'dotenv';
 
-dotenv.config();
-
+dotenv.config({ path: '../.env' });
 export const pool = new pg.Pool({
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'postgres',
