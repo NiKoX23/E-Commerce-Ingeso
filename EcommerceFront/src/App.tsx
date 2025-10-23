@@ -4,7 +4,21 @@ import 'primeicons/primeicons.css';
 import './App.css';
 import { Card } from 'primereact/card';
 import { Link } from 'react-router-dom';
+import { Button } from 'primereact/button';
 
+
+const categoriaBtnStyle = {
+  backgroundColor: '#00fff7',
+  color: '#282623',
+  fontWeight: 600,
+  fontSize: '1.3rem',
+  borderRadius: '12px',
+  padding: '1.2rem 2.5rem',
+  boxShadow: '0 4px 16px rgba(0,0,0,0.15)',
+  border: 'none',
+  cursor: 'pointer',
+  transition: 'transform 0.1s',
+};
 
 function App() {
   return (

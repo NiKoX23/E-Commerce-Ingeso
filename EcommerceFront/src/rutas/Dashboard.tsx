@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import SearchBar from '../componentes/SearchBar';
 import '../componentes/SearchBar.css';
 import RecommendedBar from '../componentes/RecommendedBar';
@@ -7,23 +6,13 @@ import AllProductsBar from '../componentes/AllProductsBar';
 import '../componentes/AllProductsBar.css';
 import CarritoIcono from '../componentes/CarritoIcono';
 import '../componentes/CarritoIcono.css';
+import { Button } from 'primereact/button';
+import { useSidebar } from '../context/SidebarContext';
 
-const categoriaBtnStyle: React.CSSProperties = {
-  backgroundColor: '#00fff7',
-  color: '#282623',
-  fontWeight: 600,
-  fontSize: '1.3rem',
-  borderRadius: '12px',
-  padding: '1.2rem 2.5rem',
-  boxShadow: '0 4px 16px rgba(0,0,0,0.15)',
-  border: 'none',
-  cursor: 'pointer',
-  textDecoration: 'none',
-  transition: 'transform 0.1s',
-  marginBottom: '1rem',
-};
+// categoría estilo comentado (no usado)
 
 export default function Dashboard() {
+  const { open } = useSidebar();
   return (
     <div 
       style={{
@@ -37,7 +26,9 @@ export default function Dashboard() {
         background: 'linear-gradient(135deg, #000000ff, #9e0505ff)',
         position: 'relative',
       }}>
-      <CarritoIcono />
+  <div className="w-full flex align-items-center justify-content-between" style={{ maxWidth: 1100, marginBottom: 16 }}>
+    <CarritoIcono />
+  </div>
       <h1 style={{ 
         textAlign: 'center',
         marginBottom: '2rem',

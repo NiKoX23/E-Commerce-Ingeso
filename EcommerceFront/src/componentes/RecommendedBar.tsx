@@ -24,7 +24,7 @@ const RecommendedBar: React.FC = () => {
         {productosRecomendados.map((prod) => (
           <Link to={`/producto/${prod.id}`} className="recommendedbar-item" key={prod.id} style={{ textDecoration: 'none' }}>
             <div className="recommendedbar-img-section">
-              <img src={prod.imagen} alt={prod.nombre} className="recommendedbar-img" />
+              <img src={prod.imagen} className="recommendedbar-img" />
             </div>
             <span className="recommendedbar-nombre">{prod.nombre}</span>
             <span className="recommendedbar-reseña">{prod.reseña} ★</span>

@@ -1,10 +1,16 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+// PrimeReact and PrimeFlex global styles (moved here so they load for the entire app/layout)
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
 import { createBrowserRouter,RouterProvider } from 'react-router-dom'
 import { CarritoProvider } from './context/CarritoContext';
 
 import App from './App.tsx';
+import AppLayout from './layout/AppLayout';
 import Login from './rutas/Login.tsx';
 import SignUp from './rutas/SignUp.tsx';
 import Dashboard from './rutas/Dashboard.tsx';
@@ -26,16 +32,34 @@ const router = createBrowserRouter([
     element: <SignUp />,
   },
   {
-    path: "/dashboard",
-    element: <Dashboard />,
+    path: "/",
+    element: <AppLayout />,
+    children: [
+      {
+        index: true,
+        element: <App />
+      },
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "producto/:id",
+        element: <ProductoDetalle />,
+      },
+      {
+        path: "carrito",
+        element: <CarritoCompra />,
+      }
+    ]
   },
   {
-    path: "/producto/:id",
-    element: <ProductoDetalle />,
+    path: "/login",
+    element: <Login />,
   },
   {
-    path: "/carrito",
-    element: <CarritoCompra />,
+    path: "/signup",
+    element: <SignUp />,
   }
 ]);
 
