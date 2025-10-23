@@ -1,2 +1,3 @@
 iniciar backend: cd EcommerceBackend -> npx ts-node app.ts
 iniciar frontend: cd EcommerceFront -> npm run dev
+instalar primeflex (esto es para estilos ): cd EcommerceFront -> npm install primeflex
