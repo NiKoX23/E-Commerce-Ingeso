@@ -1,4 +1,12 @@
 import { Link } from 'react-router-dom';
+import SearchBar from '../componentes/SearchBar';
+import '../componentes/SearchBar.css';
+import RecommendedBar from '../componentes/RecommendedBar';
+import '../componentes/RecommendedBar.css';
+import AllProductsBar from '../componentes/AllProductsBar';
+import '../componentes/AllProductsBar.css';
+import CarritoIcono from '../componentes/CarritoIcono';
+import '../componentes/CarritoIcono.css';
 
 const categoriaBtnStyle: React.CSSProperties = {
   backgroundColor: '#00fff7',
@@ -27,7 +35,9 @@ export default function Dashboard() {
         alignItems: 'center',
         justifyContent: 'flex-start', 
         background: 'linear-gradient(135deg, #000000ff, #9e0505ff)',
+        position: 'relative',
       }}>
+      <CarritoIcono />
       <h1 style={{ 
         textAlign: 'center',
         marginBottom: '2rem',
@@ -36,6 +46,9 @@ export default function Dashboard() {
       }}>
         Catálogo de productos
       </h1>
+      <SearchBar />
+      <RecommendedBar />
+      <AllProductsBar />
       <div
         style={{
           display: 'flex', 
@@ -44,11 +57,6 @@ export default function Dashboard() {
           justifyContent: 'center',
           gap: '2rem', 
         }}>
-        <Link to="/futbol" style={categoriaBtnStyle}>Futbol</Link>
-        <Link to="/tenis" style={categoriaBtnStyle}>Tenis</Link>
-        <Link to="/basketball" style={categoriaBtnStyle}>Basketball</Link>
-        <Link to="/boxeo" style={categoriaBtnStyle}>Boxeo</Link>
-        <Link to="/running" style={categoriaBtnStyle}>Running</Link>
       </div>
     </div>
   );
