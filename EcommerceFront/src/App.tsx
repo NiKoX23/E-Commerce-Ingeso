@@ -1,24 +1,10 @@
-import React from 'react';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import './App.css';
-import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { Link } from 'react-router-dom';
 
-const categoriaBtnStyle = {
-  backgroundColor: '#00fff7',
-  color: '#282623',
-  fontWeight: 600,
-  fontSize: '1.3rem',
-  borderRadius: '12px',
-  padding: '1.2rem 2.5rem',
-  boxShadow: '0 4px 16px rgba(0,0,0,0.15)',
-  border: 'none',
-  cursor: 'pointer',
-  transition: 'transform 0.1s',
-};
 
 function App() {
   return (
