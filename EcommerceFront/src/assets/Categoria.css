@@ -1,0 +1,19 @@
+.categoria-container {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 500px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.categoria-container h2 {
+  color: #00fff7;
+  margin-bottom: 1rem;
+}
+
+.categoria-container p {
+  font-size: 1.2rem;
+}
