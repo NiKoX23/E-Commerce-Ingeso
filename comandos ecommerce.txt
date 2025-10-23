@@ -1,2 +1,2 @@
-iniciar backend: npx ts-node app.ts
-iniciar frontend: npm run dev
+iniciar backend: cd EcommerceBackend -> npx ts-node app.ts
+iniciar frontend: cd EcommerceFront -> npm run dev
