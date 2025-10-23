@@ -1,0 +1,15 @@
+.carrito-btn {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  padding: 0;
+  transition: transform 0.15s;
+}
+.carrito-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 2px 8px rgba(252,87,94,0.15);
+}
