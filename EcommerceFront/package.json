@@ -12,6 +12,7 @@
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
     "bcrypt": "^6.0.0",
+    "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.7",
     "react": "^19.1.1",
