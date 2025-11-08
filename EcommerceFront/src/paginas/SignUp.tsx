@@ -3,7 +3,7 @@ import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { Password } from "primereact/password";
 import { InputText } from "primereact/inputtext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Message } from "primereact/message";
 
 export default function SignUp() {
