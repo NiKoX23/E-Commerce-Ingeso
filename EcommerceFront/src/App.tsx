@@ -3,92 +3,38 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import './App.css';
 import { Button } from 'primereact/button';
-import { Card } from 'primereact/card';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Rating } from 'primereact/rating';
+import type { Nullable } from 'primereact/ts-helpers';
 
 function App() {
-  const navegate = useNavigate();
+  const navigate = useNavigate();
+  const [value, setValue] = useState<number | null>(0);
+  const [rated, setRated] = useState(false);
+
+    const handleRating = (val: Nullable<number>) => {
+    if (!rated && val !== null) {
+      setValue(val ?? null);
+      setRated(true);
+    }
+  };
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        padding: '2rem',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'linear-gradient(135deg, #3a67c0, #826868ff)',
-      }}>
+    <div className="app-container">
+      <h1>Bienvenido a la Plataforma de E-commerce</h1>
+      <p>¡Tenemos lo que tú necesitas!</p>
+      <div className="button-group">
+        <Button label="Login" icon="pi pi-sign-in" onClick={() => navigate('/login')} className="p-button-primary" />
+        <Button label="SignUp" icon="pi pi-user-plus" onClick={() => navigate('/signup')} className="p-button-secondary" />
+      </div>
 
-      <h1 style={{ 
-        textAlign: 'center',
-        marginBottom: '3rem',
-        color: '#fff',
-        textShadow: '1px 1px 5px rgba(0, 0, 0, 0.3)',}}>
-        Bienvenido a Ecommerce
-      </h1>
-
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          gap: '2rem',
-        }}>
-
-        {/*LogIn */}
-        <Card
-          header={<h3 style={{color: '#282623ff' }}>¿Ya estás registrado?</h3>}
-          className='card-animated card-fade'
-          style={{ 
-            width: '300px',
-            textAlign: 'center',
-            borderRadius: '12px',
-            boxShadow: '0 8px 20px rgba(0,0,0,0.2)',
-            backgroundColor: '#ffffffcc'
-          }}>
-
-          <p>
-            <Button 
-                label="Iniciar Sesión"
-                className="p-button-primary p-button-rounded p-button-lg"
-                style={{width: '100%'}}
-                onClick={() => {
-                  navegate('/login');
-                }}
-            />
-          </p>
-        </Card>
-
-        {/*SignUp */}
-        <Card
-          header={<h3 style={{color: '#282623ff' }}>¿Aún no tienes cuenta?</h3>}
-          className='card-animated card-fade'
-          style={{ 
-            width: '300px',
-            textAlign: 'center',
-            borderRadius: '12px',
-            boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)',
-            backgroundColor: '#ffffffcc'
-          }}>
-
-          <p>
-            <Button 
-              label="Crear Cuenta"
-              className="p-button-primary p-button-rounded p-button-lg"
-              style={{width: '100%'}}
-              onClick={() => {
-                navegate('/signup');
-              }}
-            />
-          </p>
-        </Card>
-
+      <div className="rating-container">
+        <span>Valóranos:</span>
+        <Rating value={value ?? 0} onChange={(e) => handleRating(e.value)} cancel={false} readOnly={rated} />
       </div>
     </div>
   );
 }
 
-export default App
+export default App;

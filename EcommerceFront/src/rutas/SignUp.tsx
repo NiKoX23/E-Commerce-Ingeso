@@ -4,6 +4,7 @@ import { Button } from "primereact/button";
 import { Password } from "primereact/password";
 import { InputText } from "primereact/inputtext";
 import { Navigate, useNavigate } from "react-router-dom";
+import { Message } from "primereact/message";
 
 export default function SignUp() {
   const [nombre, setNombre] = useState("");
@@ -11,10 +12,43 @@ export default function SignUp() {
   const [confirm_password, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [rut, setRut] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!nombre || !email || !password || !confirm_password || !rut) {
+      setError("Todos los campos son obligatorios.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Ingrese un correo válido (ej: usuario@ejemplo.com).");
+      return;
+    }
+
+    const rutRegex = /^\d{7,8}-[0-9Kk]$/;
+    if (!rutRegex.test(rut)) {
+      setError("El RUT debe tener el formato 12345678-9 o 12345678-K.");
+      return;
+    }
+
+    if (!email || !password) {
+      setError("Debe ingresar correo y contraseña.");
+      return;
+    }
+
+    if (!email.includes("@")) {
+      setError("El correo debe contener '@'.");
+      return;
+    }
+
+    if (!rut.includes("-")) {
+      setError("El RUT debe contener '-'.");
+      return;
+    }
 
     if (password !== confirm_password) {
       alert("Las contraseñas no coinciden");
@@ -35,7 +69,7 @@ export default function SignUp() {
         setEmail("");
         setPassword("");
         setConfirmPassword("");
-        navigate("/login");
+        navigate("/dashboard");
       }else{
         alert("Error: " + data.message);
         
@@ -47,6 +81,23 @@ export default function SignUp() {
   }
 
   return (
+    <div className="p-field p-col-12">
+      <Button
+        label="Home"
+        icon="pi pi-home"
+        className="p-button-text p-button-lg"
+        style={{
+          position: "absolute",
+          top: "20px",
+          left: "20px",
+          color: "white",
+          background: "rgba(147, 14, 14, 1)",
+          backdropFilter: "blur(4px)",
+          borderRadius: "10px",
+        }}
+        onClick={() => navigate("/")}
+      />
+
       <div 
           style={{
             minHeight: '100vh',
@@ -55,7 +106,8 @@ export default function SignUp() {
             alignItems: 'center',
             background: 'linear-gradient(135deg, #3a67c0, #5ab9ea)',
             padding: '2rem',
-          }}>
+          }}
+      >
             <Card 
               title="Registrarse"
               style={{
@@ -66,6 +118,14 @@ export default function SignUp() {
                 padding: '2rem',
                 textAlign: 'center',
               }}>
+
+              {error && (
+                <Message
+                  severity="error"
+                  text={error}
+                  style={{ marginBottom: "1rem" }}
+                  />
+                )}
     
               <div className="p-fluid p-formgrid p-grid">
                 <div className="p-field p-col-12">
@@ -94,7 +154,7 @@ export default function SignUp() {
                     id="email" 
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)} 
-                    placeholder="Ingrese su email"
+                    placeholder="usuario@ejemplo.com"
                   />
                 </div>
 
@@ -132,5 +192,6 @@ export default function SignUp() {
               </div>
             </Card>
         </div>
+    </div>
   )
 }
