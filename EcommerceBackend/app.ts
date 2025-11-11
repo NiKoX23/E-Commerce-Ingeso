@@ -10,6 +10,7 @@ import signupRouter from './rutasBack/signup';
 import todosRouter from './rutasBack/todos';
 import userRouter from './rutasBack/user';
 import filtroProductosRouter from './rutasBack/filtroProductos';
+import recommendedRouter from './RecommendedBar';
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use('/api/signup', signupRouter);
 app.use('/api/todos', todosRouter);
 app.use('/api/user', userRouter);
 app.use('/api/productos', filtroProductosRouter);
+app.use('/api/recomendados', recommendedRouter);
 
 app.get('/', (req, res) => {
   res.send('Backend is running with PostgreSQL');
