@@ -1,40 +1,107 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './AllProductsBar.css';
 
-// Simulación de todos los productos con imagen
-const productos = [
-  { id: 1, nombre: 'Producto 1', reseña: 4.8, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 2, nombre: 'Producto 2', reseña: 4.7, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 3, nombre: 'Producto 3', reseña: 4.9, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 4, nombre: 'Producto 4', reseña: 4.6, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 5, nombre: 'Producto 5', reseña: 4.5, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 6, nombre: 'Producto 6', reseña: 4.9, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 7, nombre: 'Producto 7', reseña: 4.8, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 8, nombre: 'Producto 8', reseña: 4.7, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 9, nombre: 'Producto 9', reseña: 4.6, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 10, nombre: 'Producto 10', reseña: 4.9, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 11, nombre: 'Producto 11', reseña: 3.2, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 12, nombre: 'Producto 12', reseña: 2.9, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 13, nombre: 'Producto 13', reseña: 3.5, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 14, nombre: 'Producto 14', reseña: 2.7, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 15, nombre: 'Producto 15', reseña: 3.0, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-];
+interface Producto {
+  id_producto: number;
+  nombre?: string;
+  descripcion: string;
+  precio: number;
+  imagen: string;
+  tipo: string;
+  marca: string;
+  stock: number;
+}
 
-const AllProductsBar: React.FC = () => {
+interface AllProductsBarProps {
+  categoriaFiltrada?: string | null;
+}
+
+const AllProductsBar: React.FC<AllProductsBarProps> = ({ categoriaFiltrada }) => {
+  const [productos, setProductos] = useState<Producto[]>([]);
+  const [cargando, setCargando] = useState(true);
+
+  const getImagenFallback = (descripcion: string, tipo: string) => {
+    const colores: { [key: string]: string } = {
+      ZAPATILLA: 'FF6B6B',
+      CAMISETA: '4ECDC4',
+      SHORT: 'FFE66D',
+    };
+    const color = colores[tipo] || 'CCCCCC';
+    return `https://via.placeholder.com/110x110/${color}/${color}?text=${encodeURIComponent(descripcion.substring(0, 10))}`;
+  };
+
+  useEffect(() => {
+    const fetchProductos = async () => {
+      try {
+        setCargando(true);
+        let url = 'http://localhost:5000/api/productos';
+
+        if (categoriaFiltrada) {
+          url = `http://localhost:5000/api/productos/categoria/${categoriaFiltrada}`;
+        }
+
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        // Manejar tanto si viene en 'productos' como directamente
+        const productosList = data.productos || data;
+        setProductos(Array.isArray(productosList) ? productosList : []);
+      } catch (error) {
+        console.error('Error al cargar productos:', error);
+        setProductos([]);
+      } finally {
+        setCargando(false);
+      }
+    };
+
+    fetchProductos();
+  }, [categoriaFiltrada]);
+
+  if (cargando) {
+    return (
+      <div className="allproductsbar-container">
+        <h3 className="allproductsbar-title">Todos los productos 🛒</h3>
+        <div style={{ textAlign: 'center', color: '#fff', padding: '2rem' }}>
+          Cargando productos...
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="allproductsbar-container">
-      <h3 className="allproductsbar-title">Todos los productos 🛒</h3>
+      <h3 className="allproductsbar-title">
+        {categoriaFiltrada ? `${categoriaFiltrada} - ` : ''}Todos los productos 🛒
+      </h3>
       <div className="allproductsbar-list">
-        {productos.map((prod) => (
-          <Link to={`/producto/${prod.id}`} className="allproductsbar-item" key={prod.id} style={{ textDecoration: 'none' }}>
-            <div className="allproductsbar-img-section">
-              <img src={prod.imagen} className="allproductsbar-img" />
-            </div>
-            <span className="allproductsbar-nombre">{prod.nombre}</span>
-            <span className="allproductsbar-reseña">{prod.reseña} ★</span>
-          </Link>
-        ))}
+        {productos.length > 0 ? (
+          productos.map((prod) => (
+            <Link 
+              to={`/producto/${prod.id_producto}`} 
+              className="allproductsbar-item" 
+              key={prod.id_producto} 
+              style={{ textDecoration: 'none' }}
+            >
+              <div className="allproductsbar-img-section">
+                <img 
+                  src={prod.imagen || getImagenFallback(prod.descripcion, prod.tipo)} 
+                  className="allproductsbar-img"
+                  alt={prod.descripcion}
+                  onError={(e) => {
+                    e.currentTarget.src = getImagenFallback(prod.descripcion, prod.tipo);
+                  }}
+                />
+              </div>
+              <span className="allproductsbar-nombre">{prod.descripcion}</span>
+              <span className="allproductsbar-reseña">${prod.precio.toLocaleString()}</span>
+            </Link>
+          ))
+        ) : (
+          <div style={{ textAlign: 'center', color: '#fff', width: '100%', padding: '2rem' }}>
+            No hay productos en esta categoría
+          </div>
+        )}
       </div>
     </div>
   );

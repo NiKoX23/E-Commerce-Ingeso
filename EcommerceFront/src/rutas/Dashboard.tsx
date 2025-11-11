@@ -6,13 +6,19 @@ import AllProductsBar from '../componentes/AllProductsBar';
 import '../componentes/AllProductsBar.css';
 import CarritoIcono from '../componentes/CarritoIcono';
 import '../componentes/CarritoIcono.css';
-import { Button } from 'primereact/button';
-import { useSidebar } from '../context/SidebarContext';
-
-// categoría estilo comentado (no usado)
+import FiltrosCategorias from '../componentes/FiltrosCategorias';
+import '../componentes/FiltrosCategorias.css';
+import RenovarStock from '../componentes/RenovarStock';
+import '../componentes/RenovarStock.css';
+import { useState } from 'react';
 
 export default function Dashboard() {
-  const { open } = useSidebar();
+  const [categoriaFiltrada, setCategoriaFiltrada] = useState<string | null>(null);
+
+  const handleCategoriaSelect = (categoria: string) => {
+    setCategoriaFiltrada(categoria || null);
+  };
+
   return (
     <div 
       style={{
@@ -38,8 +44,10 @@ export default function Dashboard() {
         Catálogo de productos
       </h1>
       <SearchBar />
+      <RenovarStock />
+      <FiltrosCategorias onCategoriaSelect={handleCategoriaSelect} />
       <RecommendedBar />
-      <AllProductsBar />
+      <AllProductsBar categoriaFiltrada={categoriaFiltrada} />
       <div
         style={{
           display: 'flex', 

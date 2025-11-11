@@ -6,16 +6,18 @@ export type ProductoCarrito = {
   nombre: string;
   precio: number;
   cantidad: number;
+  stockDisponible?: number; // Nuevo: para validar cantidad máxima
 };
 
 interface CarritoContextType {
   productos: ProductoCarrito[];
   agregarProducto: (producto: ProductoCarrito) => void;
   eliminarProducto: (id: number) => void;
-  actualizarCantidad: (id: number, cantidad: number) => void;
+  actualizarCantidad: (id: number, cantidad: number) => boolean; // Retorna si fue exitoso
   obtenerTotal: () => number;
   obtenerCantidadTotal: () => number;
   limpiarCarrito: () => void;
+  actualizarStock: (id: number, nuevoStock: number) => void; // Nuevo: para sincronizar stock
 }
 
 const CarritoContext = createContext<CarritoContextType | undefined>(undefined);
@@ -47,13 +49,27 @@ export const CarritoProvider = ({ children }: { children: ReactNode }) => {
     setProductos(prev => prev.filter(p => p.id !== id));
   };
 
-  const actualizarCantidad = (id: number, cantidad: number) => {
+  const actualizarCantidad = (id: number, cantidad: number): boolean => {
     if (cantidad <= 0) {
       eliminarProducto(id);
-      return;
+      return true;
     }
+
+    // Validar que no supere el stock disponible
+    const producto = productos.find(p => p.id === id);
+    if (producto && producto.stockDisponible && cantidad > producto.stockDisponible) {
+      return false; // No actualizar si excede el stock
+    }
+
     setProductos(prev =>
       prev.map(p => p.id === id ? { ...p, cantidad } : p)
+    );
+    return true;
+  };
+
+  const actualizarStock = (id: number, nuevoStock: number) => {
+    setProductos(prev =>
+      prev.map(p => p.id === id ? { ...p, stockDisponible: nuevoStock } : p)
     );
   };
 
@@ -76,7 +92,8 @@ export const CarritoProvider = ({ children }: { children: ReactNode }) => {
         actualizarCantidad,
         obtenerTotal,
         obtenerCantidadTotal,
-        limpiarCarrito 
+        limpiarCarrito,
+        actualizarStock
       }}>
       {children}
     </CarritoContext.Provider>
