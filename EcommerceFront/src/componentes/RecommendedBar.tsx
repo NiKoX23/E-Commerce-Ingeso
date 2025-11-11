@@ -1,22 +1,68 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './RecommendedBar.css';
-
 import { Link } from 'react-router-dom';
-// Simulación de productos recomendados con imagen
-const productosRecomendados = [
-  { id: 1, nombre: 'Producto 1', reseña: 4.8, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 2, nombre: 'Producto 2', reseña: 4.7, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 3, nombre: 'Producto 3', reseña: 4.9, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 4, nombre: 'Producto 4', reseña: 4.6, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 5, nombre: 'Producto 5', reseña: 4.5, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 6, nombre: 'Producto 6', reseña: 4.9, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 7, nombre: 'Producto 7', reseña: 4.8, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 8, nombre: 'Producto 8', reseña: 4.7, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 9, nombre: 'Producto 9', reseña: 4.6, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-  { id: 10, nombre: 'Producto 10', reseña: 4.9, imagen: 'https://via.placeholder.com/110x110/cccccc/cccccc' },
-];
+
+interface ProductoRecomendado {
+  id: number;
+  nombre?: string;
+  tipo: string;
+  marca: string;
+  precio: number;
+  stock: number;
+  reseña: number;
+  descripcion: string;
+  imagen: string;
+}
 
 const RecommendedBar: React.FC = () => {
+  const [productosRecomendados, setProductosRecomendados] = useState<ProductoRecomendado[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchRecommendedProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('http://localhost:5000/api/recomendados/recommended');
+        
+        if (!response.ok) {
+          throw new Error('Error al obtener productos recomendados');
+        }
+
+        const data = await response.json();
+        setProductosRecomendados(data);
+        setError(null);
+      } catch (err) {
+        console.error('Error:', err);
+        setError('No se pudieron cargar los productos recomendados');
+        // Fallback si hay error
+        setProductosRecomendados([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecommendedProducts();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="recommendedbar-container">
+        <h3 className="recommendedbar-title">Productos recomendados ⭐</h3>
+        <p>Cargando productos...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="recommendedbar-container">
+        <h3 className="recommendedbar-title">Productos recomendados ⭐</h3>
+        <p>{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="recommendedbar-container">
       <h3 className="recommendedbar-title">Productos recomendados ⭐</h3>
@@ -24,9 +70,9 @@ const RecommendedBar: React.FC = () => {
         {productosRecomendados.map((prod) => (
           <Link to={`/producto/${prod.id}`} className="recommendedbar-item" key={prod.id} style={{ textDecoration: 'none' }}>
             <div className="recommendedbar-img-section">
-              <img src={prod.imagen} className="recommendedbar-img" />
+              <img src={prod.imagen} className="recommendedbar-img" alt={prod.marca} />
             </div>
-            <span className="recommendedbar-nombre">{prod.nombre}</span>
+            <span className="recommendedbar-nombre">{prod.marca} - {prod.tipo}</span>
             <span className="recommendedbar-reseña">{prod.reseña} ★</span>
           </Link>
         ))}
