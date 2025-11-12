@@ -12,6 +12,7 @@ import Tenis from './rutas/Tenis.tsx';
 import Basketball from './rutas/Basketball.tsx';
 import Boxeo from './rutas/Boxeo.tsx';
 import Running from './rutas/Running.tsx';
+import Busqueda from './rutas/Busqueda.tsx';
 
 
 const router = createBrowserRouter([
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
   {
     path: "/running",
     element: <Running />,
+  },
+  {
+    path: "/busqueda",
+    element: <Busqueda />,
   },
 ]);
 
