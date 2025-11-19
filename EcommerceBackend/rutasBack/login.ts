@@ -1,12 +1,15 @@
 import { Router, Request, Response } from 'express';
 import { pool } from '../db';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const router = Router();
+const SECRET = process.env.JWT_SECRET!;
 
 router.post("/", async (req: Request, res: Response) => {
-  try{
+  try {
     const {email, password} = req.body;
+
     if(!email || !password) {
       return res.status(400).json({message: "Debe rellenar todos los campos"});
     }
@@ -27,8 +30,19 @@ router.post("/", async (req: Request, res: Response) => {
       return res.status(401).json({message: "Contraseña incorrecta"});
     }
 
+    const token = jwt.sign(
+      {
+        rut: user.rut,
+        nombre: user.nombre,
+        email: user.email
+      },
+      SECRET,
+      { expiresIn: "2h" }
+    );
+
     res.json({
       message: "Acceso correcto",
+      token,
       user: {
         rut: user.rut,
         nombre: user.nombre,
@@ -36,7 +50,7 @@ router.post("/", async (req: Request, res: Response) => {
       },
     });
 
-  }catch(error: any) {
+  } catch(error: any) {
     res.status(500).json({message: "Error en el servidor", error});
   }
 

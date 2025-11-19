@@ -89,8 +89,9 @@ export default function TarjetaPago() {
     validarCvv(v);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const okNum = validarNumero(numero);
     const okNom = validarNombre(nombre);
     const okFec = validarFecha(fecha);
@@ -100,14 +101,35 @@ export default function TarjetaPago() {
       return;
     }
 
-    console.log("Enviar pago:", {
-      numero: numero.replace(/\s/g, ""),
-      nombre,
-      fecha,
-      cvv,
-    });
+    const token = localStorage.getItem("token");
 
-    alert("Validación exitosa (demo). Aquí enviarías al backend.");
+    try {
+      const response = await fetch("http://localhost:5000/api/tarjeta", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          numero: numero.replace(/\s/g, ""),
+          nombre,
+          fecha,
+          cvv,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Tarjeta registrada / pago procesado correctamente");
+      } else {
+        alert("Error: " + data.message);
+      }
+
+    } catch (error) {
+      console.error(error);
+      alert("Error en el servidor");
+    }
   };
 
   return (

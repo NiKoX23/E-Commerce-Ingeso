@@ -41,8 +41,8 @@ export default function Login() {
       const data = await response.json();
 
       if (response.ok) {
+        localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("email", email);
         navigate("/dashboard");
       } else {
         setError(data.message || "Credenciales incorrectas.");
