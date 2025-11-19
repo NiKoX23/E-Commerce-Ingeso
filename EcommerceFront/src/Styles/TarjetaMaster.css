@@ -1,0 +1,217 @@
+/* Import Google Font - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: #e3f2fd;
+}
+
+/* Layout */
+.tarjeta-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 250px;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.tarjeta-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Tarjeta */
+.container {
+  position: relative;
+  background-image: url("../assets/bg.png");
+  background-size: cover;
+  padding: 40px;
+  border-radius: 25px;
+  max-width: 500px;
+  width: 500px;
+  height: 320px;
+  transform-origin: center;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+header,
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo img {
+  width: 85px;
+  margin-right: 15px;
+}
+
+h5 {
+  font-size: 28px;
+  font-weight: 500;
+  color: #fff;
+}
+
+header .chip {
+  width: 95px;
+}
+
+h6 {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 20px;
+}
+
+/* Colores dorados */
+h5.name{
+  margin-top: 25px;
+  font-size: 22px;
+  color: #ffffff;
+}
+
+.valid-date h6 {
+  font-size: 15px;
+}
+
+.valid-date h5 {
+  font-size: 20px;
+  color: #ffd700;
+}
+
+h5.number {
+  margin-top: 8px;
+  font-size: 32px;
+  letter-spacing: 3px;
+  font-weight: 600;
+  color: #ffd700;
+}
+
+.container .card-details {
+  margin-top: 45px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+/* Formulario */
+.tarjeta-form {
+  width: 300px;
+  background: white;
+  padding: 50px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.tarjeta-form h3 {
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.tarjeta-form label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+  margin-top: 15px;
+}
+
+.tarjeta-form input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.tarjeta-form .row {
+  display: flex;
+  gap: 15px;
+}
+
+.tarjeta-form button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background: #007bff;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tarjeta-form button:hover {
+  background: #005ecb;
+}
+
+/* Atras de la tarjeta */
+.tarjeta-animada {
+  width: 500px;
+  height: 340px;
+  perspective: 1000px;
+}
+
+.tarjeta-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.9s;
+  transform-style: preserve-3d;
+}
+
+.tarjeta-inner.girar {
+  transform: rotateY(180deg);
+}
+
+.tarjeta-front, .tarjeta-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 20px;
+  padding: 25px;
+  background-image: url("../assets/bg.png");
+  background-size: cover;
+}
+
+.tarjeta-back {
+  transform: rotateY(180deg);
+  padding-top: 20px;
+}
+
+.banda-magnetica {
+  height: 45px;
+  background: #363333;
+  margin-top: 10px;
+  border-radius: 6px;
+}
+
+.cvv-box {
+  margin-top: 40px;
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  width: 80%;
+}
+
+.cvv-value {
+  font-size: 18px;
+  margin-top: 5px;
+  letter-spacing: 3px;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 4px;
+}

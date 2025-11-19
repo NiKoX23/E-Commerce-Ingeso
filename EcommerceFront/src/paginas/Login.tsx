@@ -42,6 +42,7 @@ export default function Login() {
 
       if (response.ok) {
         localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("email", email);
         navigate("/dashboard");
       } else {
         setError(data.message || "Credenciales incorrectas.");
@@ -64,7 +65,6 @@ export default function Login() {
         padding: "2rem",
       }}
     >
-    <div className="p-field p-col-12">
       <Button
         label="Home"
         icon="pi pi-home"
@@ -80,8 +80,7 @@ export default function Login() {
         }}
         onClick={() => navigate("/")}
       />
-
-    </div>
+      
       <Card
         title="Iniciar Sesión"
         style={{

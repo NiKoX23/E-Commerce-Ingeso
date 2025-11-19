@@ -1,16 +1,17 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
+import './Styles/index.css'
 import { createBrowserRouter,RouterProvider } from 'react-router-dom'
-import App from './paginas/Home.tsx'
+import Home from './paginas/Home.tsx'
 import Login from './paginas/Login.tsx'
 import SignUp from './paginas/SignUp.tsx'
 import Dashboard from './paginas/Dashboard.tsx'
+import TarjetaMaster from './paginas/TarjetaMaster.tsx'
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <Home />,
 
   },
 
@@ -28,6 +29,11 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: <Dashboard />,
   },
+
+  {
+    path: "/tarjetaMaster",
+    element: <TarjetaMaster />
+  }
 
 ])
 

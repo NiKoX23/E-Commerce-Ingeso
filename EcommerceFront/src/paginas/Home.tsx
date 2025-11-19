@@ -1,7 +1,7 @@
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import './Home.css';
+import '../Styles/Home.css';
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';

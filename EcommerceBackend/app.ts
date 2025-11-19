@@ -8,6 +8,7 @@ import signOutRouter from './rutasBack/signout';
 import signupRouter from './rutasBack/signup';
 import todosRouter from './rutasBack/todos';
 import userRouter from './rutasBack/user';
+import productosRouter from './rutasBack/productos';
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use('/api/signOut', signOutRouter);
 app.use('/api/signup', signupRouter);
 app.use('/api/todos', todosRouter);
 app.use('/api/user', userRouter);
+app.use('/api/productos', productosRouter);
 
 app.get('/', (req, res) => {
   res.send('Backend is running');
