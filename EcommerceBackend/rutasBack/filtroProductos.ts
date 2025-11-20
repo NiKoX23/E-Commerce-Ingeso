@@ -179,7 +179,7 @@ router.post("/renovar-stock", async (req: Request, res: Response) => {
           message: 'Producto no encontrado'
         });
       }
-
+          
       res.json({
         success: true,
         message: 'Stock renovado correctamente',
