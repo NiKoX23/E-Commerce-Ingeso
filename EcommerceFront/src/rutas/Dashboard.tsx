@@ -14,9 +14,14 @@ import { useState } from 'react';
 
 export default function Dashboard() {
   const [categoriaFiltrada, setCategoriaFiltrada] = useState<string | null>(null);
+  const [terminoBusqueda, setTerminoBusqueda] = useState<string>('');
 
   const handleCategoriaSelect = (categoria: string) => {
     setCategoriaFiltrada(categoria || null);
+  };
+
+  const handleSearch = (termino: string) => {
+    setTerminoBusqueda(termino);
   };
 
   return (
@@ -43,11 +48,11 @@ export default function Dashboard() {
       }}>
         Catálogo de productos
       </h1>
-      <SearchBar />
+      <SearchBar onSearch={handleSearch} />
       <RenovarStock />
       <FiltrosCategorias onCategoriaSelect={handleCategoriaSelect} />
       <RecommendedBar />
-      <AllProductsBar categoriaFiltrada={categoriaFiltrada} />
+      <AllProductsBar categoriaFiltrada={categoriaFiltrada} terminoBusqueda={terminoBusqueda} />
       <div
         style={{
           display: 'flex', 

@@ -21,6 +21,52 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
+// Buscar productos por término de búsqueda
+router.get("/buscar", async (req: Request, res: Response) => {
+  try {
+    const { q } = req.query;
+    
+    if (!q || typeof q !== 'string' || q.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Debe proporcionar un término de búsqueda (parámetro q)'
+      });
+    }
+
+    const termino = `%${q.trim()}%`;
+    
+    // Buscar en descripción, marca y nombre (si existe)
+    const result = await pool.query(
+      `SELECT * FROM PRODUCTO 
+       WHERE DESCRIPCION ILIKE $1 
+          OR MARCA ILIKE $1 
+          OR (NOMBRE IS NOT NULL AND NOMBRE ILIKE $1)
+       ORDER BY 
+         CASE 
+           WHEN DESCRIPCION ILIKE $2 THEN 1
+           WHEN MARCA ILIKE $2 THEN 2
+           ELSE 3
+         END,
+         PRECIO`,
+      [termino, `%${q.trim()}%`]
+    );
+
+    res.json({
+      success: true,
+      termino: q.trim(),
+      cantidad: result.rows.length,
+      productos: result.rows
+    });
+  } catch (error: any) {
+    console.error('Error al buscar productos:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Error al buscar productos',
+      error: error.message
+    });
+  }
+});
+
 // Obtener productos por categoría/tipo
 router.get("/categoria/:tipo", async (req: Request, res: Response) => {
   try {

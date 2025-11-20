@@ -37,6 +37,35 @@
   animation: pulse 1.2s infinite;
 }
 
+.searchbar-clear {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.2s;
+  z-index: 10;
+}
+
+.searchbar-clear:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.searchbar-clear:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
 @keyframes pulse {
   0% { transform: scale(1) translateY(-50%); }
   50% { transform: scale(1.15) translateY(-50%); }

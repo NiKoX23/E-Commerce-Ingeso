@@ -15,9 +15,10 @@ interface Producto {
 
 interface AllProductsBarProps {
   categoriaFiltrada?: string | null;
+  terminoBusqueda?: string;
 }
 
-const AllProductsBar: React.FC<AllProductsBarProps> = ({ categoriaFiltrada }) => {
+const AllProductsBar: React.FC<AllProductsBarProps> = ({ categoriaFiltrada, terminoBusqueda = '' }) => {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [cargando, setCargando] = useState(true);
 
@@ -37,7 +38,12 @@ const AllProductsBar: React.FC<AllProductsBarProps> = ({ categoriaFiltrada }) =>
         setCargando(true);
         let url = 'http://localhost:5000/api/productos';
 
-        if (categoriaFiltrada) {
+        // Prioridad: si hay búsqueda, usar endpoint de búsqueda
+        // Si hay categoría pero no búsqueda, usar filtro de categoría
+        // Si hay ambos, la búsqueda puede incluir filtro de categoría en el futuro
+        if (terminoBusqueda && terminoBusqueda.trim().length > 0) {
+          url = `http://localhost:5000/api/productos/buscar?q=${encodeURIComponent(terminoBusqueda.trim())}`;
+        } else if (categoriaFiltrada) {
           url = `http://localhost:5000/api/productos/categoria/${categoriaFiltrada}`;
         }
 
@@ -46,7 +52,16 @@ const AllProductsBar: React.FC<AllProductsBarProps> = ({ categoriaFiltrada }) =>
         
         // Manejar tanto si viene en 'productos' como directamente
         const productosList = data.productos || data;
-        setProductos(Array.isArray(productosList) ? productosList : []);
+        
+        // Si hay búsqueda y categoría, filtrar resultados por categoría en el frontend
+        let productosFiltrados = Array.isArray(productosList) ? productosList : [];
+        if (terminoBusqueda && terminoBusqueda.trim().length > 0 && categoriaFiltrada) {
+          productosFiltrados = productosFiltrados.filter(
+            (prod: Producto) => prod.tipo === categoriaFiltrada
+          );
+        }
+        
+        setProductos(productosFiltrados);
       } catch (error) {
         console.error('Error al cargar productos:', error);
         setProductos([]);
@@ -56,14 +71,37 @@ const AllProductsBar: React.FC<AllProductsBarProps> = ({ categoriaFiltrada }) =>
     };
 
     fetchProductos();
-  }, [categoriaFiltrada]);
+  }, [categoriaFiltrada, terminoBusqueda]);
+
+  const getTitulo = () => {
+    if (terminoBusqueda && terminoBusqueda.trim().length > 0) {
+      if (categoriaFiltrada) {
+        return `Búsqueda: "${terminoBusqueda}" en ${categoriaFiltrada} 🛒`;
+      }
+      return `Búsqueda: "${terminoBusqueda}" 🛒`;
+    }
+    if (categoriaFiltrada) {
+      return `${categoriaFiltrada} - Todos los productos 🛒`;
+    }
+    return 'Todos los productos 🛒';
+  };
+
+  const getMensajeVacio = () => {
+    if (terminoBusqueda && terminoBusqueda.trim().length > 0) {
+      if (categoriaFiltrada) {
+        return `No se encontraron productos que coincidan con "${terminoBusqueda}" en ${categoriaFiltrada}`;
+      }
+      return `No se encontraron productos que coincidan con "${terminoBusqueda}"`;
+    }
+    return 'No hay productos en esta categoría';
+  };
 
   if (cargando) {
     return (
       <div className="allproductsbar-container">
-        <h3 className="allproductsbar-title">Todos los productos 🛒</h3>
+        <h3 className="allproductsbar-title">{getTitulo()}</h3>
         <div style={{ textAlign: 'center', color: '#fff', padding: '2rem' }}>
-          Cargando productos...
+          {terminoBusqueda && terminoBusqueda.trim().length > 0 ? 'Buscando productos...' : 'Cargando productos...'}
         </div>
       </div>
     );
@@ -72,7 +110,7 @@ const AllProductsBar: React.FC<AllProductsBarProps> = ({ categoriaFiltrada }) =>
   return (
     <div className="allproductsbar-container">
       <h3 className="allproductsbar-title">
-        {categoriaFiltrada ? `${categoriaFiltrada} - ` : ''}Todos los productos 🛒
+        {getTitulo()}
       </h3>
       <div className="allproductsbar-list">
         {productos.length > 0 ? (
@@ -99,7 +137,7 @@ const AllProductsBar: React.FC<AllProductsBarProps> = ({ categoriaFiltrada }) =>
           ))
         ) : (
           <div style={{ textAlign: 'center', color: '#fff', width: '100%', padding: '2rem' }}>
-            No hay productos en esta categoría
+            {getMensajeVacio()}
           </div>
         )}
       </div>
