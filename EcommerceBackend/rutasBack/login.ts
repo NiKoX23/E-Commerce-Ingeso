@@ -14,6 +14,20 @@ router.post("/", async (req: Request, res: Response) => {
       });
     }
 
+    // Admin hardcodeado
+    if (email === 'admin' && password === 'admin123') {
+      return res.json({
+        success: true,
+        message: 'Acceso correcto',
+        user: {
+          rut: 'ADMIN',
+          nombre: 'Administrador',
+          email: 'admin',
+          isAdmin: true
+        }
+      });
+    }
+
     // Buscar usuario por email
     const result = await pool.query(
       'SELECT rut, nombre, email, password FROM USUARIO WHERE email = $1',
@@ -38,7 +52,8 @@ router.post("/", async (req: Request, res: Response) => {
         user: {
           rut: user.rut,
           nombre: user.nombre,
-          email: user.email
+          email: user.email,
+          isAdmin: false
         }
       });
     } else {

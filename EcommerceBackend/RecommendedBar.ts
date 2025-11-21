@@ -9,17 +9,26 @@ router.get('/recommended', async (req, res) => {
     // Obtener 10 productos aleatorios ordenados por reseña descendente
     const result = await pool.query(
       `SELECT 
-        id_producto as id, 
-        tipo,
-        marca,
-        precio,
-        stock,
-        reseña,
-        descripcion,
-        imagen
-      FROM producto 
-      WHERE stock > 0
-      ORDER BY reseña DESC, RANDOM() 
+        p.id_producto as id,
+        CASE 
+          WHEN p.tipo = 'ZAPATILLA' AND z.modelo IS NOT NULL THEN p.marca || ' ' || z.modelo
+          WHEN p.tipo = 'CAMISETA' AND c.numero IS NOT NULL THEN p.marca || ' Camiseta #' || c.numero || ' ' || c.equipo
+          WHEN p.tipo = 'SHORT' AND s.equipo IS NOT NULL THEN p.marca || ' Short ' || s.equipo
+          ELSE p.descripcion
+        END as nombre,
+        p.marca,
+        p.tipo as categoria,
+        p.stock,
+        p.precio,
+        p.descripcion,
+        p.imagen,
+        p.reseña
+      FROM producto p
+      LEFT JOIN zapatillas z ON p.id_producto = z.id_producto AND p.tipo = 'ZAPATILLA'
+      LEFT JOIN camisetas c ON p.id_producto = c.id_producto AND p.tipo = 'CAMISETA'
+      LEFT JOIN shorts s ON p.id_producto = s.id_producto AND p.tipo = 'SHORT'
+      WHERE p.stock > 0
+      ORDER BY p.reseña DESC, RANDOM() 
       LIMIT 10`
     );
 

@@ -6,7 +6,28 @@ const router = Router();
 // Obtener todos los productos
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const result = await pool.query("SELECT * FROM PRODUCTO ORDER BY ID_PRODUCTO");
+    const result = await pool.query(
+      `SELECT 
+        p.id_producto,
+        CASE 
+          WHEN p.tipo = 'ZAPATILLA' AND z.modelo IS NOT NULL THEN p.marca || ' ' || z.modelo
+          WHEN p.tipo = 'CAMISETA' AND c.numero IS NOT NULL THEN p.marca || ' Camiseta #' || c.numero || ' ' || c.equipo
+          WHEN p.tipo = 'SHORT' AND s.equipo IS NOT NULL THEN p.marca || ' Short ' || s.equipo
+          ELSE p.descripcion
+        END as descripcion,
+        p.marca,
+        p.tipo,
+        p.stock,
+        p.precio,
+        p.imagen,
+        p.reseña,
+        p.id_commerce
+      FROM producto p
+      LEFT JOIN zapatillas z ON p.id_producto = z.id_producto AND p.tipo = 'ZAPATILLA'
+      LEFT JOIN camisetas c ON p.id_producto = c.id_producto AND p.tipo = 'CAMISETA'
+      LEFT JOIN shorts s ON p.id_producto = s.id_producto AND p.tipo = 'SHORT'
+      ORDER BY p.id_producto`
+    );
     res.json({
       success: true,
       productos: result.rows
@@ -38,7 +59,27 @@ router.get("/categoria/:tipo", async (req: Request, res: Response) => {
     }
 
     const result = await pool.query(
-      "SELECT * FROM PRODUCTO WHERE TIPO = $1 ORDER BY PRECIO",
+      `SELECT 
+        p.id_producto,
+        CASE 
+          WHEN p.tipo = 'ZAPATILLA' AND z.modelo IS NOT NULL THEN p.marca || ' ' || z.modelo
+          WHEN p.tipo = 'CAMISETA' AND c.numero IS NOT NULL THEN p.marca || ' Camiseta #' || c.numero || ' ' || c.equipo
+          WHEN p.tipo = 'SHORT' AND s.equipo IS NOT NULL THEN p.marca || ' Short ' || s.equipo
+          ELSE p.descripcion
+        END as descripcion,
+        p.marca,
+        p.tipo,
+        p.stock,
+        p.precio,
+        p.imagen,
+        p.reseña,
+        p.id_commerce
+      FROM producto p
+      LEFT JOIN zapatillas z ON p.id_producto = z.id_producto AND p.tipo = 'ZAPATILLA'
+      LEFT JOIN camisetas c ON p.id_producto = c.id_producto AND p.tipo = 'CAMISETA'
+      LEFT JOIN shorts s ON p.id_producto = s.id_producto AND p.tipo = 'SHORT'
+      WHERE p.tipo = $1
+      ORDER BY p.precio`,
       [tipoUpper]
     );
 
@@ -63,7 +104,26 @@ router.get("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const result = await pool.query(
-      "SELECT * FROM PRODUCTO WHERE ID_PRODUCTO = $1",
+      `SELECT 
+        p.id_producto,
+        CASE 
+          WHEN p.tipo = 'ZAPATILLA' AND z.modelo IS NOT NULL THEN p.marca || ' ' || z.modelo
+          WHEN p.tipo = 'CAMISETA' AND c.numero IS NOT NULL THEN p.marca || ' Camiseta #' || c.numero || ' ' || c.equipo
+          WHEN p.tipo = 'SHORT' AND s.equipo IS NOT NULL THEN p.marca || ' Short ' || s.equipo
+          ELSE p.descripcion
+        END as descripcion,
+        p.marca,
+        p.tipo,
+        p.stock,
+        p.precio,
+        p.imagen,
+        p.reseña,
+        p.id_commerce
+      FROM producto p
+      LEFT JOIN zapatillas z ON p.id_producto = z.id_producto AND p.tipo = 'ZAPATILLA'
+      LEFT JOIN camisetas c ON p.id_producto = c.id_producto AND p.tipo = 'CAMISETA'
+      LEFT JOIN shorts s ON p.id_producto = s.id_producto AND p.tipo = 'SHORT'
+      WHERE p.id_producto = $1`,
       [id]
     );
 

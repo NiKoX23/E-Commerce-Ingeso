@@ -25,7 +25,13 @@ export default function Login() {
       if(response.ok){
         alert("Acceso correcto");
         localStorage.setItem("user",JSON.stringify(data.user));
-        navegate("/dashboard");
+        
+        // Redirigir según el tipo de usuario
+        if(data.user.isAdmin){
+          navegate("/admin");
+        }else{
+          navegate("/dashboard");
+        }
       }else{
         alert("Error: " + data.message);
       }

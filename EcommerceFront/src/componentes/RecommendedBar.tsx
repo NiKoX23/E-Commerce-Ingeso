@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 interface ProductoRecomendado {
   id: number;
-  nombre?: string;
-  tipo: string;
+  nombre: string;
+  categoria: string;
   marca: string;
   precio: number;
   stock: number;
@@ -70,9 +70,9 @@ const RecommendedBar: React.FC = () => {
         {productosRecomendados.map((prod) => (
           <Link to={`/producto/${prod.id}`} className="recommendedbar-item" key={prod.id} style={{ textDecoration: 'none' }}>
             <div className="recommendedbar-img-section">
-              <img src={prod.imagen} className="recommendedbar-img" alt={prod.marca} />
+              <img src={prod.imagen} className="recommendedbar-img" />
             </div>
-            <span className="recommendedbar-nombre">{prod.marca} - {prod.tipo}</span>
+            <span className="recommendedbar-nombre">{prod.nombre}</span>
             <span className="recommendedbar-reseña">{prod.reseña} ★</span>
           </Link>
         ))}

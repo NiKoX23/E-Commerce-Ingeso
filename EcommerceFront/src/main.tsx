@@ -16,6 +16,7 @@ import SignUp from './rutas/SignUp.tsx';
 import Dashboard from './rutas/Dashboard.tsx';
 import ProductoDetalle from './rutas/ProductoDetalle.tsx';
 import CarritoCompra from './rutas/CarritoCompra.tsx';
+import AdminPanel from './rutas/AdminPanel.tsx';
 
 
 const router = createBrowserRouter([
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUp />,
+  },
+  {
+    path: "/admin",
+    element: <AdminPanel />,
   },
   {
     path: "/",
